@@ -4,17 +4,27 @@ PostgreSQL with PostGIS and creating a PostgreSQL database and activating the Po
 https://postgis.net/install/ 
 
 Running tabulate.py also requires installation of the following Python libraries:
+
 psycopg2
+
 gdal
+
 osgeo
 
 Local database settings must be added to the .py file for the following variables:
+
 local_postgresql_path
+
 host
+
 port
+
 user
+
 password
+
 database
+
 
 tabulate.py works with two test files:
 
