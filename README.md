@@ -1,5 +1,4 @@
 # tabulate
-DBMS project
 Land cover tabulation for this project uses an open-source GIS database called PostGIS. Running tabulate.py requires installing
 PostgreSQL with PostGIS and creating a PostgreSQL database and activating the PostGIS extension. Instructions can be found here:
 https://postgis.net/install/ 
@@ -18,10 +17,9 @@ password
 database
 
 tabulate.py works with two test files:
-tl_2021_us_county.shp from https://www.census.gov/cgi-bin/geo/shapefiles/index.php (Year: 2021, Layer Type: Counties (and 
-	equivalent))
-hi_landcover_wimperv_9-30-08_se5.img from https://www.mrlc.gov/data?f%5B0%5D=region%3Aislands%20%26%20territories (Download 
-	"NLCD 2001 Land Cover (HAWAII)")
+tl_2021_us_county.shp from https://www.census.gov/cgi-bin/geo/shapefiles/index.php (Year: 2021, Layer Type: Counties (and equivalent))
+
+hi_landcover_wimperv_9-30-08_se5.img from https://www.mrlc.gov/data?f%5B0%5D=region%3Aislands%20%26%20territories (Download "NLCD 2001 Land Cover (HAWAII)")
 
 Paths to local files may need to be changed.
 
