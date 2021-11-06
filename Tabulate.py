@@ -65,7 +65,7 @@ load_shp(shape_path,'4269','landcover_hi', True)
 #intersects county boundaries (Hawaii only) with vectorized landcover, 
 #calculating intersected area in meters using HI state plane 3 projection
 start = time.time()
-connection = psycopg2.connect(database="tabulate",user="postgres", password="rostiBle#820")
+connection = psycopg2.connect(database="my_database",user="my_username", password="my_password")
 cursor = connection.cursor()
 cursor.execute("DROP TABLE IF EXISTS counties_hi")
 cursor.execute("CREATE TABLE counties_hi AS SELECT * FROM counties WHERE statefp = '15';")
@@ -88,7 +88,7 @@ print("Elapsed time (s): ", stop-start)
 #intersects tract boundaries (Hawaii only) with vectorized landcover, 
 #calculating intersected area in meters using HI state plane 3 projection
 start = time.time()
-connection = psycopg2.connect(database="tabulate",user="postgres", password="rostiBle#820")
+connection = psycopg2.connect(database="my_database",user="my_username", password="my_password")
 cursor = connection.cursor()
 cursor.execute("DROP TABLE IF EXISTS ct_lc_intersect")
 cursor.execute("CREATE TABLE ct_lc_intersect (geoid varchar, gid integer, dn integer, intersectarea_m2 double precision)")
