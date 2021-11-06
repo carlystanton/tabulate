@@ -32,6 +32,9 @@ load_shp(shape_path, '4269', 'counties')
 #vectorizes landcover raster
 #point path to local raster file
 raster = gdal.Open("/hi_landcover_wimperv_9-30-08_se5.img")
+outSpatialRef = osr.SpatialReference()
+outSpatialRef.ImportFromEPSG(4269)
+raster = gdal.Translate('/projected_lc.img', raster, outputSRS =  outSpatialRef)
 srcband = raster.GetRasterBand(1)
 prj = raster.GetProjection()
 srs=osr.SpatialReference(wkt=prj)
@@ -45,42 +48,8 @@ dst_field = dst_layer.GetLayerDefn().GetFieldIndex("DN")
 gdal.Polygonize(srcband, None, dst_layer, dst_field, [], callback=None)
 print("Raster vectorized")
 
-#projects vectorized raster into NAD83 for intersection with county boundaries
-inSpatialRef = srs
-outSpatialRef = osr.SpatialReference()
-outSpatialRef.ImportFromEPSG(4269)
-coordTrans = osr.CoordinateTransformation(inSpatialRef, outSpatialRef)
-inDataSet = drv.Open("/polygonized_lc.shp")
-inLayer = inDataSet.GetLayer()
-outputShapefile = "/projected_lc.shp"
-if os.path.exists(outputShapefile):
-    drv.DeleteDataSource(outputShapefile)
-outDataSet = drv.CreateDataSource(outputShapefile)
-outLayer = outDataSet.CreateLayer("projected_lc", outSpatialRef, geom_type=ogr.wkbMultiPolygon)
-
-inLayerDefn = inLayer.GetLayerDefn()
-for i in range(0, inLayerDefn.GetFieldCount()):
-    fieldDefn = inLayerDefn.GetFieldDefn(i)
-    outLayer.CreateField(fieldDefn)
-
-outLayerDefn = outLayer.GetLayerDefn()
-inFeature = inLayer.GetNextFeature()
-while inFeature:
-    geom = inFeature.GetGeometryRef()
-    geom.Transform(coordTrans)
-    outFeature = ogr.Feature(outLayerDefn)
-    outFeature.SetGeometry(geom)
-    for i in range(0, outLayerDefn.GetFieldCount()):
-        outFeature.SetField(outLayerDefn.GetFieldDefn(i).GetNameRef(), inFeature.GetField(i))
-    outLayer.CreateFeature(outFeature)
-    outFeature = None
-    inFeature = inLayer.GetNextFeature()
-
-inDataSet = None
-outDataSet = None
-
 #point path to local vectorized landcover file
-shape_path = "/projected_lc.shp"
+shape_path = "/polygonized_lc.shp"
 load_shp(shape_path,'4269','landcover_hi')
 
 #intersects county boundaries (Hawaii only) with vectorized landcover, 
